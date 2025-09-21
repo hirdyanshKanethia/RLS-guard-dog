@@ -24,11 +24,10 @@ export default async function HeadTeacherPage() {
 
   // Security check: ensure the user is a head_teacher
   if (!profile || profile.role !== "head_teacher") {
-    // You might want to redirect to a generic dashboard or show an error
     redirect("/");
   }
 
-  // Fetch all data for the school. RLS policies will enforce security.
+  // Fetch all data for the school, including the role for each profile.
   const { data: school, error } = await supabase
     .from("schools")
     .select(
@@ -37,7 +36,7 @@ export default async function HeadTeacherPage() {
           classrooms (
             id,
             name,
-            profiles:profiles!profiles_classroom_id_fkey ( id, full_name ),
+            profiles:profiles!profiles_classroom_id_fkey ( id, full_name, role ),
             
             teacher_classroom_assignments (
               profiles ( full_name )
@@ -48,15 +47,24 @@ export default async function HeadTeacherPage() {
     .eq("id", profile.school_id)
     .single();
 
-  // Fetch all progress records for the school. RLS will also protect this.
-  const { data: allProgress } = await supabase.from("progress").select("*");
-
-  if (error) {
+  if (error || !school) {
     console.log("[ERROR] ", error);
     return (
       <p className="text-center text-red-500">Error loading school data.</p>
     );
   }
+
+  // Fetch all progress records for the school. RLS will also protect this.
+  const { data: allProgress } = await supabase.from("progress").select("*");
+
+  // NEW: Filter profiles in each classroom to only include students
+  const schoolWithFilteredStudents = {
+    ...school,
+    classrooms: school.classrooms.map((classroom) => ({
+      ...classroom,
+      profiles: classroom.profiles.filter((p) => p.role === "student"),
+    })),
+  };
 
   return (
     <div className="min-h-screen p-8">
@@ -70,9 +78,9 @@ export default async function HeadTeacherPage() {
         </header>
 
         <main className="space-y-8">
-          {school.classrooms.length > 0 ? (
-            school.classrooms.map((classroom) => {
-              // NEW: Get the teacher's name from the nested data
+          {/* We now map over the newly filtered school data */}
+          {schoolWithFilteredStudents.classrooms.length > 0 ? (
+            schoolWithFilteredStudents.classrooms.map((classroom) => {
               const teacherAssignment =
                 classroom.teacher_classroom_assignments[0];
               const teacherName = teacherAssignment?.profiles?.full_name;
@@ -84,7 +92,6 @@ export default async function HeadTeacherPage() {
                 >
                   <div className="border-b border-gray-700 pb-2 mb-4">
                     <h2 className="text-2xl font-semibold">{classroom.name}</h2>
-                    {/* NEW: Display the teacher's name */}
                     {teacherName ? (
                       <p className="text-sm text-purple-400 font-medium">
                         Taught by: {teacherName}
