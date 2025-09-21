@@ -126,19 +126,21 @@ export default function TeacherPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading Teacher Dashboard...
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading Teacher Dashboard...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="flex justify-between items-center mb-12">
+        <header className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold">Teacher Dashboard</h1>
-            <p className="text-gray-400 mt-2">
+            <h1 className="text-3xl font-semibold text-gray-900">
+              Teacher Dashboard
+            </h1>
+            <p className="text-gray-600 mt-2">
               Welcome, {teacherData?.full_name}!
             </p>
           </div>
@@ -146,15 +148,15 @@ export default function TeacherPage() {
         </header>
 
         {/* Button and message display section */}
-        <div className="my-6 p-4 bg-gray-800 rounded-lg flex items-center justify-between shadow-md">
-          <p className="text-gray-300 flex-grow">
+        <div className="my-6 p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between shadow-sm">
+          <p className="text-gray-700 flex-grow">
             {message ||
               "Click the button to refresh class average calculations."}
           </p>
           <button
             onClick={handleCalculateAverages}
             disabled={isCalculating}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-lg transition duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed whitespace-nowrap"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {isCalculating ? "Calculating..." : "Calculate Averages"}
           </button>
@@ -169,15 +171,19 @@ export default function TeacherPage() {
             return (
               <div
                 key={classroom.id}
-                className="bg-gray-800 p-4 rounded-lg shadow-md"
+                className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm"
               >
-                <h3 className="font-semibold text-lg">{classroom.name}</h3>
+                <h3 className="font-medium text-lg text-gray-800">
+                  {classroom.name}
+                </h3>
                 {averageData ? (
-                  <p className="text-2xl font-bold text-purple-400">
+                  <p className="text-2xl font-semibold text-blue-600 mt-2">
                     {averageData.average_score}
                   </p>
                 ) : (
-                  <p className="text-gray-400">No average calculated yet.</p>
+                  <p className="text-gray-500 mt-2">
+                    No average calculated yet.
+                  </p>
                 )}
               </div>
             );

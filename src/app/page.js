@@ -96,19 +96,23 @@ export default function HomePage() {
   }, [router, supabase]);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-gray-800 rounded-2xl shadow-lg p-8 space-y-8">
+    <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm p-8 space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold mb-2">RLS Guard Dog</h1>
-          <p className="text-gray-400">Please select your login method</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+            RLS Guard Dog
+          </h1>
+          <p className="text-gray-600">Please select your login method</p>
         </div>
 
         {/* Head Teacher Login Section */}
         <div className="text-center">
-          <h2 className="text-xl font-semibold mb-3">For Head Teachers</h2>
+          <h2 className="text-lg font-medium text-gray-800 mb-3">
+            For Head Teachers
+          </h2>
           <button
             onClick={handleGitHubLogin}
-            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center"
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 flex items-center justify-center"
           >
             <span className="ml-3">Log In with GitHub</span>
           </button>
@@ -116,16 +120,16 @@ export default function HomePage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-600"></div>
+            <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-gray-800 px-2 text-gray-400">OR</span>
+            <span className="bg-white px-3 text-gray-500">OR</span>
           </div>
         </div>
 
         {/* Student & Teacher Login Section */}
         <div>
-          <h2 className="text-xl font-semibold mb-3 text-center">
+          <h2 className="text-lg font-medium text-gray-800 mb-3 text-center">
             For Teachers & Students
           </h2>
           <form onSubmit={handleEmailLogin} className="space-y-4">
@@ -134,25 +138,25 @@ export default function HomePage() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
             <input
               type="password"
-              placeholder="password"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
             <button
               type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200"
             >
               Log In
             </button>
             {error && (
-              <p className="text-red-500 text-sm text-center pt-2">{error}</p>
+              <p className="text-red-600 text-sm text-center pt-2">{error}</p>
             )}
           </form>
         </div>

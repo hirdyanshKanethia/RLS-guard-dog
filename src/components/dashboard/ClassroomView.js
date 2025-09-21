@@ -54,7 +54,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
   };
 
   const handleAddRecord = async (studentId, classroomId, schoolId) => {
-    console.log("SCHOOL", schoolId)
+    console.log("SCHOOL", schoolId);
     const newScore = parseInt(newRecord.score, 10);
     if (
       !newRecord.subject.trim() ||
@@ -83,7 +83,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
 
     if (error) {
       setMessage({ type: "error", text: "Failed to add record." });
-      console.log("[ERROR] ", error)
+      console.log("[ERROR] ", error);
     } else {
       const updatedClassrooms = classrooms.map((c) =>
         c.id === classroomId
@@ -142,13 +142,13 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
   };
 
   return (
-    <main className="space-y-8">
+    <main className="space-y-6">
       {message.text && (
         <div
-          className={`p-4 rounded-lg text-center ${
+          className={`p-4 rounded-lg text-center border ${
             message.type === "error"
-              ? "bg-red-900/50 text-red-300"
-              : "bg-green-900/50 text-green-300"
+              ? "bg-red-50 border-red-200 text-red-700"
+              : "bg-green-50 border-green-200 text-green-700"
           }`}
         >
           {message.text}
@@ -157,41 +157,52 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
       {classrooms.map(({ id: classroomId, name, profiles }) => (
         <div
           key={classroomId}
-          className="bg-gray-800 shadow-lg rounded-2xl p-6"
+          className="bg-white border border-gray-200 shadow-sm rounded-lg p-6"
         >
-          <h2 className="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">
+          <h2 className="text-xl font-medium text-gray-800 mb-6 border-b border-gray-200 pb-3">
             {name}
           </h2>
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {profiles.map((student) => (
-              <li key={student.id} className="bg-gray-700 p-4 rounded-lg">
+              <li
+                key={student.id}
+                className="bg-gray-50 border border-gray-100 p-4 rounded-lg"
+              >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-lg">{student.full_name}</h3>
+                  <h3 className="font-medium text-lg text-gray-900">
+                    {student.full_name}
+                  </h3>
                   {isAdding.studentId !== student.id && (
                     <button
                       onClick={() => setIsAdding({ studentId: student.id })}
-                      className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm"
+                      className="bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded-md text-sm transition-colors duration-200"
                     >
                       Add Record
                     </button>
                   )}
                 </div>
-                <div className="pl-4 mt-2">
+                <div className="pl-4 mt-4">
                   <table className="min-w-full text-left mt-2">
                     <thead>
-                      <tr className="border-b border-gray-600">
-                        <th className="py-2">Subject</th>
-                        <th className="py-2">Score</th>
-                        <th className="py-2 text-right">Actions</th>
+                      <tr className="border-b border-gray-300">
+                        <th className="py-2 text-gray-700 font-medium">
+                          Subject
+                        </th>
+                        <th className="py-2 text-gray-700 font-medium">
+                          Score
+                        </th>
+                        <th className="py-2 text-right text-gray-700 font-medium">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {student.progress
                         .sort((a, b) => a.subject.localeCompare(b.subject))
                         .map((p) => (
-                          <tr key={p.id}>
-                            <td className="py-2">{p.subject}</td>
-                            <td className="py-2">
+                          <tr key={p.id} className="border-b border-gray-100">
+                            <td className="py-2 text-gray-900">{p.subject}</td>
+                            <td className="py-2 text-gray-900">
                               {editing.progressId === p.id ? (
                                 <input
                                   type="number"
@@ -202,7 +213,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                       score: e.target.value,
                                     })
                                   }
-                                  className="bg-gray-800 rounded p-1 w-20"
+                                  className="bg-white border border-gray-300 rounded-md p-1 w-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                               ) : (
                                 p.score
@@ -213,13 +224,13 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                 <>
                                   <button
                                     onClick={() => handleSave(p.id)}
-                                    className="text-green-400 hover:text-green-300 font-semibold mr-3"
+                                    className="text-green-600 hover:text-green-700 font-medium mr-3"
                                   >
                                     Save
                                   </button>
                                   <button
                                     onClick={handleCancel}
-                                    className="text-gray-400 hover:text-gray-300"
+                                    className="text-gray-500 hover:text-gray-600"
                                   >
                                     Cancel
                                   </button>
@@ -228,7 +239,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                 <div className="space-x-4">
                                   <button
                                     onClick={() => handleEditClick(p)}
-                                    className="text-purple-400 hover:text-purple-300 font-semibold"
+                                    className="text-blue-600 hover:text-blue-700 font-medium"
                                   >
                                     Edit
                                   </button>
@@ -241,7 +252,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                         classroomId
                                       )
                                     }
-                                    className="text-red-400 hover:text-red-300 font-semibold"
+                                    className="text-red-600 hover:text-red-700 font-medium"
                                   >
                                     Remove
                                   </button>
@@ -251,7 +262,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                           </tr>
                         ))}
                       {isAdding.studentId === student.id && (
-                        <tr className="bg-gray-600/50">
+                        <tr className="bg-blue-50">
                           <td className="py-2">
                             <input
                               type="text"
@@ -263,7 +274,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                   subject: e.target.value,
                                 })
                               }
-                              className="bg-gray-800 rounded p-1 w-full"
+                              className="bg-white border border-gray-300 rounded-md p-1 w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                           </td>
                           <td className="py-2">
@@ -277,21 +288,25 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                                   score: e.target.value,
                                 })
                               }
-                              className="bg-gray-800 rounded p-1 w-20"
+                              className="bg-white border border-gray-300 rounded-md p-1 w-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                           </td>
                           <td className="py-2 text-right">
                             <button
                               onClick={() =>
-                                handleAddRecord(student.id, classroomId, schoolId)
+                                handleAddRecord(
+                                  student.id,
+                                  classroomId,
+                                  schoolId
+                                )
                               }
-                              className="text-green-400 hover:text-green-300 font-semibold mr-3"
+                              className="text-green-600 hover:text-green-700 font-medium mr-3"
                             >
                               Save
                             </button>
                             <button
                               onClick={handleCancel}
-                              className="text-gray-400 hover:text-gray-300"
+                              className="text-gray-500 hover:text-gray-600"
                             >
                               Cancel
                             </button>
@@ -302,7 +317,7 @@ export default function ClassroomView({ initialClassrooms, schoolId }) {
                   </table>
                   {student.progress.length === 0 &&
                     isAdding.studentId !== student.id && (
-                      <p className="text-gray-400 italic text-center py-4">
+                      <p className="text-gray-500 italic text-center py-4">
                         No progress records found.
                       </p>
                     )}

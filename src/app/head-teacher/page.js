@@ -122,39 +122,41 @@ export default function HeadTeacherPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading Dashboard...
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading Dashboard...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="flex justify-between items-center mb-12">
+        <header className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold">Head Teacher Dashboard</h1>
-            <p className="text-gray-400 mt-2">Overseeing {school?.name}</p>
+            <h1 className="text-3xl font-semibold text-gray-900">
+              Head Teacher Dashboard
+            </h1>
+            <p className="text-gray-600 mt-2">Overseeing {school?.name}</p>
           </div>
           <SignOutButton />
         </header>
 
-        {/* NEW: Button and message display section */}
-        <div className="my-6 p-4 bg-gray-800 rounded-lg flex items-center justify-between shadow-md">
-          <p className="text-gray-300 flex-grow">
+        {/* Button and message display section */}
+        <div className="my-6 p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between shadow-sm">
+          <p className="text-gray-700 flex-grow">
             {message ||
               "Click the button to refresh class average calculations."}
           </p>
           <button
             onClick={handleCalculateAverages}
             disabled={isCalculating}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-lg transition duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed whitespace-nowrap"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {isCalculating ? "Calculating..." : "Calculate Averages"}
           </button>
         </div>
 
-        <main className="space-y-8">
+        <main className="space-y-6">
           {school?.classrooms.map((classroom) => {
             const teacherAssignment =
               classroom.teacher_classroom_assignments[0];
@@ -167,17 +169,19 @@ export default function HeadTeacherPage() {
             return (
               <div
                 key={classroom.id}
-                className="bg-gray-800 shadow-lg rounded-2xl p-6"
+                className="bg-white border border-gray-200 shadow-sm rounded-lg p-6"
               >
-                <div className="border-b border-gray-700 pb-2 mb-4 flex justify-between items-start">
+                <div className="border-b border-gray-200 pb-3 mb-6 flex justify-between items-start">
                   <div>
-                    <h2 className="text-2xl font-semibold">{classroom.name}</h2>
+                    <h2 className="text-xl font-medium text-gray-800">
+                      {classroom.name}
+                    </h2>
                     {teacherName ? (
-                      <p className="text-sm text-purple-400 font-medium">
+                      <p className="text-sm text-blue-600 font-medium mt-1">
                         Taught by: {teacherName}
                       </p>
                     ) : (
-                      <p className="text-sm text-gray-500 italic">
+                      <p className="text-sm text-gray-500 italic mt-1">
                         No teacher assigned
                       </p>
                     )}
@@ -185,10 +189,10 @@ export default function HeadTeacherPage() {
                   {/* Display the average score */}
                   {averageData && (
                     <div className="text-right">
-                      <span className="text-sm text-gray-400 block">
+                      <span className="text-sm text-gray-500 block">
                         Class Average
                       </span>
-                      <span className="text-2xl font-bold text-purple-400">
+                      <span className="text-2xl font-semibold text-blue-600">
                         {averageData.average_score}
                       </span>
                     </div>
@@ -201,29 +205,29 @@ export default function HeadTeacherPage() {
                     {classroom.profiles.map((student) => (
                       <li
                         key={student.id}
-                        className="bg-gray-700 p-4 rounded-lg"
+                        className="bg-gray-50 border border-gray-100 p-4 rounded-lg"
                       >
-                        <h3 className="font-bold text-lg">
+                        <h3 className="font-medium text-lg text-gray-900">
                           {student.full_name}
                         </h3>
-                        <div className="pl-4 mt-2">
+                        <div className="pl-4 mt-3">
                           {allProgress?.filter(
                             (p) => p.student_id === student.id
                           ).length > 0 ? (
-                            <ul className="list-disc list-inside text-gray-300">
+                            <ul className="list-disc list-inside text-gray-700 space-y-1">
                               {allProgress
                                 .filter((p) => p.student_id === student.id)
                                 .map((progress) => (
                                   <li key={progress.id}>
                                     {progress.subject}:{" "}
-                                    <span className="font-semibold text-white">
+                                    <span className="font-medium text-gray-900">
                                       {progress.score}
                                     </span>
                                   </li>
                                 ))}
                             </ul>
                           ) : (
-                            <p className="text-gray-400 italic">
+                            <p className="text-gray-500 italic">
                               No progress records found.
                             </p>
                           )}
@@ -232,7 +236,7 @@ export default function HeadTeacherPage() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-400 text-center">
+                  <p className="text-gray-500 text-center py-4">
                     No students assigned to this classroom.
                   </p>
                 )}
